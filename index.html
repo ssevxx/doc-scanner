@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DocScan — Pemindai Dokumen</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="logo">📄 DocScan</div>
+  <button id="btnExportTop" class="btn primary hidden">Export PDF</button>
+</header>
+
+<!-- ===== HOME / DAFTAR HALAMAN ===== -->
+<main id="viewHome" class="view">
+  <div id="emptyState" class="empty-state">
+    <div class="empty-icon">📸</div>
+    <h2>Belum ada dokumen</h2>
+    <p>Ambil foto atau upload gambar dokumen, lalu ubah jadi PDF yang rapi.</p>
+  </div>
+  <div id="pagesGrid" class="pages-grid"></div>
+
+  <div class="fab-row">
+    <button id="btnCamera" class="fab" title="Ambil foto">📷</button>
+    <button id="btnUpload" class="fab" title="Upload gambar">🖼️</button>
+    <input type="file" id="fileInput" accept="image/*" multiple hidden>
+  </div>
+</main>
+
+<!-- ===== EDITOR ===== -->
+<main id="viewEditor" class="view hidden">
+  <div class="editor-toolbar">
+    <button id="btnBack" class="btn ghost">← Kembali</button>
+    <span id="editorTitle" class="editor-title">Halaman 1</span>
+    <button id="btnDeletePage" class="btn danger-ghost">🗑️</button>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="editorCanvas"></canvas>
+    <div id="cropBox" class="crop-box hidden">
+      <div class="handle tl" data-h="tl"></div>
+      <div class="handle tr" data-h="tr"></div>
+      <div class="handle bl" data-h="bl"></div>
+      <div class="handle br" data-h="br"></div>
+    </div>
+  </div>
+
+  <div class="tool-tabs">
+    <button class="tab active" data-tab="crop">✂️ Crop</button>
+    <button class="tab" data-tab="filter">🎨 Filter</button>
+    <button class="tab" data-tab="adjust">🔧 Atur</button>
+  </div>
+
+  <div id="panelCrop" class="panel">
+    <div class="row">
+      <button class="btn small" data-ratio="free">Bebas</button>
+      <button class="btn small" data-ratio="1:1">1:1</button>
+      <button class="btn small" data-ratio="4:3">4:3</button>
+      <button class="btn small" data-ratio="3:4">3:4</button>
+      <button class="btn small" data-ratio="16:9">16:9</button>
+    </div>
+    <div class="row">
+      <button id="btnApplyCrop" class="btn primary">Terapkan Crop</button>
+      <button id="btnResetCrop" class="btn ghost">Reset</button>
+    </div>
+  </div>
+
+  <div id="panelFilter" class="panel hidden">
+    <div class="filter-row" id="filterRow">
+      <button class="filter-btn active" data-filter="original"><span class="swatch f-original"></span>Asli</button>
+      <button class="filter-btn" data-filter="enhance"><span class="swatch f-enhance"></span>Enhance</button>
+      <button class="filter-btn" data-filter="gray"><span class="swatch f-gray"></span>Abu-abu</button>
+      <button class="filter-btn" data-filter="bw"><span class="swatch f-bw"></span>B&W</button>
+    </div>
+  </div>
+
+  <div id="panelAdjust" class="panel hidden">
+    <div class="row">
+      <button id="btnRotateL" class="btn">⟲ 90°</button>
+      <button id="btnRotateR" class="btn">⟳ 90°</button>
+    </div>
+  </div>
+</main>
+
+<!-- ===== KAMERA MODAL ===== -->
+<div id="cameraModal" class="modal hidden">
+  <video id="cameraVideo" autoplay playsinline></video>
+  <div class="camera-controls">
+    <button id="btnCloseCamera" class="btn ghost">Batal</button>
+    <button id="btnSnap" class="snap-btn"></button>
+    <span class="spacer"></span>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
